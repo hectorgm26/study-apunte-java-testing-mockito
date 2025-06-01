@@ -1,0 +1,59 @@
+
+Mockito es un framework de pruebas para Java que permite crear objetos simulados (mocks)
+para probar el comportamiento de clases y métodos sin necesidad de depender de implementaciones reales.
+
+ Es ampliamente utilizado en pruebas unitarias para aislar el código bajo prueba
+  y verificar interacciones con dependencias.
+
+Ejemplo: Un proyecto tiene alguna clase que permite guardar cosas en una bd, y nosotros queremos hacer una prueba,
+sin guardar datos en bd. Con mockito simularemos esto, sin usar la bd
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.18.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.18.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+Primero, debemos utilizar la anotacion @ExtendWith(MockitoExtension.class) arriba de la clase de prueba,
+para indicar que vamos a usar Mockito en nuestras pruebas.
+En Junit 4 se usa @RunWith(MockitoJUnitRunner.class)
+
+Y luego en la clase, ponemos como atributo la clase que queremos instanciar para interactuar con los mocks,
+ y le ponemos la anotacion @InjectMocks, creando el objeto para poder se utilizado por otros mocks
+
+Y para crear el mock (el objeto que queremos simular), usamos la anotacion @Mock sobre el atributo que queremos simular.
+
+LAS CLASES FINAL NO PERMITEN TRABAJAR CON MOCKITO DIRECTAMENTE, YA QUE NO SE PUEDEN EXTENDER.
+PERO SE PUEDE HACER DE LA SIGUIENTE FORMA:
+1) crear en resources un paqueteo llamado mockito-extensions
+2) Luego crear un file llamado org.mockito.plugins.MockMaker
+3) Dentro de ese archivo, poner el texto mock-maker-inline
+
+Y las validaciones de prueba se hacen con when(mock.method()).thenReturn(value)
+para simular el comportamiento del mock, PERO SE USAN SOLAMENTE EN METODOS QUE DEVUELVEN UN VALOR.
+
+PARA METODOS QUE NO DEVUELVEN NADA SE USAN ARGUMENTCAPTORS,
+Y PARA METODOS QUE DEVUELVEN UN VALOR SE USAN MATCHERS, COMO ANY(), EQ(), IS(), ETC.
+
+Anotaciones comunes:
+
+@InjectMocks: Se usa para crear una instancia de la clase bajo prueba y inyectar los mocks necesarios en ella.
+@Mock: Se usa para crear un mock de una clase o interfaz.
+@Spy: Se usa para crear un espía de una clase, permitiendo verificar interacciones y también llamar a métodos reales.
+@Verify: Se usa para verificar interacciones con los mocks, asegurando que se llamaron ciertos métodos con los parámetros esperados.
+
+Ademas, esta el metodo mock (Mockito.mock(nombreClase.class)) que simula el comportamiento de una clase o interfaz,
+
+TAMBIEN PARA PROVEEDER DATOS DE PRUEBA, EN LA RAIZ DEL PACKAGE A TESTEAR, SE PUEDE CREAR UN DATA PROVIDER
+CON UN ATRIBUTO DE TIPO ESTATICO DEL QUE SE QUIERE DEVOLVER, Y UN METODO QUE LO DEVUELVA, PARA QUE SE PUEDA USAR EN LAS PRUEBAS.
