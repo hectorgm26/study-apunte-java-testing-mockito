@@ -86,6 +86,7 @@ public class PlayerServiceImplTest {
         // When
         when(this.playerRepository.findById(anyLong())).thenReturn(DataProvider.playerMock());
         Player player = this.playerService.findById(id);
+        // Primero se define qué debe devolver el mock con when(...), y luego se llama al método real del servicio con playerService.findById(id) para comprobar que usa bien esa dependencia simulada y funciona como se espera.
 
         // Then
         assertNotNull(player);
